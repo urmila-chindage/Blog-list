@@ -86,20 +86,20 @@ export default function Registration() {
       setcpasswordError("Password can not match")
     }
     else {
-      setcpasswordError("");
-      return true
+      setcpasswordError("Password match");
+      return false;
     }
   }
 
   const registration = () => {
     if (firstname != "" && lastname != "" && email != "" && passwordInput != "" && confirmPassword != "" && (passwordInput !== confirmPassword)) {
       setMsg("Thank you for Registration " + firstname + " " + lastname);
-      setFirstname("");
-      setLastname("");
-      setEmail("");
-      setPasswordInput("")
-      setConfirmPassword("")
-      navigate('/bloglist')
+      // setFirstname("");
+      // setLastname("");
+      // setEmail("");
+      // setPasswordInput("")
+      // setConfirmPassword("")
+      // navigate('/bloglist')
     }
     else {
       setEmailError("please enter valid email")

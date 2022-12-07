@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {useNavigate,Link} from 'react-router-dom';
 import user from '../user.json';
-
+import { createContext, useState } from "react";
+import ReactSwitch from "react-switch";
 import './css/login.css'
 
+export const ThemeContext = createContext(null);
 export default function Login() {
+   
+    const [theme, setTheme] = useState("dark");
+    const toggleTheme = () => {
+      setTheme((curr) => (curr === "light" ? "dark" : "light"));
+    };
 
     const [userData,setUserData] = useState(user);
     const [email, setEmail] = useState("");
@@ -82,7 +89,8 @@ export default function Login() {
 
 
     return (
-        <>
+        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <div className="App" id={theme}>
         <div className="container">
             <div className="row">
                 <div className="col-sm-4 col-md-offset-4 login-container-up">
@@ -132,12 +140,19 @@ export default function Login() {
                             <p className="text-success p-2 m-2">{msg}</p>
 
                             <p>New user <Link to="/registration">Register here</Link></p>
+
+                            <div className="switch">
+          <label> {theme === "light" ? "Light Mode" : "Dark Mode"}</label>
+          <ReactSwitch onChange={toggleTheme} checked={theme === "dark"} />
+        </div>
                             
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        </>
+        </div>
+        </ThemeContext.Provider>
     )
+   
 }
