@@ -1,0 +1,27 @@
+
+    [
+        {
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john.doe@example.email",
+            "password": "John@1234"
+            
+        },
+        {
+            "firstName": "Jenny",
+            "lastName": "Thomas",
+            "email": "jenny.thomas@example.email",
+            "password": "Jenny@1234"
+            
+        },
+        {
+            "firstName": "Urmila",
+            "lastName": "Sirase",
+            "email": "urmilachindage@gmail.com",
+            "password": "urmila@1234"
+            
+        }
+    ]
+        
+
+
