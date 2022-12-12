@@ -1,188 +1,190 @@
-import React, { useState, useEffect } from 'react';
-import {Link,useNavigate} from 'react-router-dom'
+import React , { useRef,useState } from "react";
+import { useForm } from "react-hook-form";
+import {useNavigate} from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
-import './css/login.css'
-
-export default function Registration() {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
-  const [passwordInput, setPasswordInput] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  const [firstnameError, setFirstnameError] = useState(false);
-  const [lastnameError, setLastnameError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [cpasswordError, setcpasswordError] = useState(false);
-  const [msg, setMsg] = useState("");
-
+export default function Registration () {
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const [passwordType, setPasswordType] = useState("password");
+  const password = useRef({});
+  password.current = watch("password", "");
   const navigate = useNavigate();
 
-
-  const regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-  const alpha = /^[0-9a-zA-Z]+$/
-  //const strongRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})";
-  const minLengthRegExp = /.{8,}/;
-
-  const togglePassword = () => {
-    if (passwordType === "password") {
+  const formSubmit = (data) => {
+    //alert("Registration successful")
+   // toast("Wow so easy!");
+    navigate('/bloglist')
+  };
+ // const notify = () => toast("Wow so easy!");
+ const togglePassword = () => {
+  if (passwordType === "password") {
       setPasswordType("text")
       return;
-    }
-    setPasswordType("password")
   }
-
-  function handleFirstname(e) {
-    setFirstname(e.target.value);
-    if (!firstname || alpha.test(firstname) === false) {
-      setFirstnameError("Please enter only alphanumric characters")
-    }
-    else {
-      setFirstnameError("");
-      return true
-    }
-  }
-
-  function handleLastname(e) {
-    setLastname(e.target.value);
-    if (!lastname || alpha.test(lastname) === false) {
-      setLastnameError("Please enter only alphanumric characters")
-    }
-    else {
-      setLastnameError("");
-      return true
-    }
-  }
-
-  function emailValidation(e) {
-    setEmail(e.target.value);
-
-
-    if (!email || regex.test(email) === false) {
-      setEmailError("Please enter valid email")
-    }
-    else {
-      setEmailError("");
-      return true
-    }
-  }
-  function handlePasswordChange(e) {
-    setPasswordInput(e.target.value);
-
-    if (!passwordInput || passwordInput.length <= 8) {
-      setPasswordError("Password must be at least 8 chars long")
-    }
-    else {
-      setPasswordError("");
-      return true
-    }
-  }
-  function handleCPasswordChange(e) {
-    setConfirmPassword(e.target.value);
-
-    if (passwordInput !== confirmPassword) {
-      setcpasswordError("Password can not match")
-    }
-    else {
-      setcpasswordError("Password match");
-      return false;
-    }
-  }
-
-  const registration = () => {
-    if (firstname != "" && lastname != "" && email != "" && passwordInput != "" && confirmPassword != "" && (passwordInput !== confirmPassword)) {
-      setMsg("Thank you for Registration " + firstname + " " + lastname);
-      // setFirstname("");
-      // setLastname("");
-      // setEmail("");
-      // setPasswordInput("")
-      // setConfirmPassword("")
-      // navigate('/bloglist')
-    }
-    else {
-      setEmailError("please enter valid email")
-      setPasswordError("please enter password")
-      setFirstnameError("Please enter first name")
-      setLastnameError("Please enter last name")
-      setcpasswordError("Please enter confirm password")
-    }
-  }
-
+  setPasswordType("password")
+}
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-sm-4 col-md-offset-4 login-container-up">
-          <div className="login-container-down"><br />
+    <div className="container my-5">
+     
+      <div className="row mt-4">
+        <div className="col-xl-6 col-lg-6 col-12 m-auto login-container-up">
+        <div className="login-container-down"><br />
+          <form
+            method="POST"
+            onSubmit={handleSubmit(formSubmit)}
+            autoComplete="off"
+          >
+           
+              
             <h3 className="text-center text-dark font-weight-bold">Registration</h3>
-            <div className="container text-center">
-              <div>
-                <input
-                  type="text"
-                  placeholder='First Name'
-                  className='form-control form--input'
-                  value={firstname}
-                  onChange={handleFirstname}
-                />
-                <span className="error-text">{firstnameError}</span>
+             
 
-                <input
-                  type="text"
-                  placeholder='Last Name'
-                  className='form-control form--input'
-                  value={lastname}
-                  onChange={handleLastname}
-                />
-                <span className="error-text">{lastnameError}</span>
-
-                <input
-                  type="text"
-                  placeholder='Email'
-                  className='form-control form--input'
-                  value={email}
-                  onChange={emailValidation}
-                />
-                <span className="error-text">{emailError}</span>
-
-                <input
-                  type={passwordType}
-                  onChange={handlePasswordChange}
-                  value={passwordInput}
+              <div className="container text-center">
+                <div className="form-group my-3">
                  
-                  className="form-control form--input"
-                  placeholder="Password"
-                />
-                <button className="showhidebtn" onClick={togglePassword}>
-                  {passwordType === "password" ? <i className="fa fa-eye-slash"></i> : <i className="fa fa-eye"></i>}
-                </button>
+                  <input
+                    type="text"
+                    name="firstname"
+                    className={`form-control form--input ${
+                      errors.firstname ? "is-invalid" : ""
+                    }`}
+                    placeholder="First Name"
+                    {...register("firstname", {
+                      required: "First Name is required",
+                      pattern: {
+                        value: /^[a-zA-Z]+$/,
+                        message: "First Name must be a valid string",
+                      },
+                      minLength: {
+                        value: 3,
+                        message: "First Name should be greater than 3 characters",
+                      },
+                      maxLength: {
+                        value: 20,
+                        message: "First Name shouldn't be greater than 20 characters",
+                      },
+                    })}
+                  />
+                  <div className="error-text">
+                    {errors?.firstname?.message}
+                  </div>
+                </div>
 
-                {/* <span className="error-text">{error}</span> */}
-                <span className="error-text">{passwordError}</span>
+                <div className="form-group my-3">
+                 
+                  <input
+                    type="text"
+                    name="lastname"
+                    className={`form-control form--input ${
+                      errors.lastname ? "is-invalid" : ""
+                    }`}
+                    placeholder="Last Name"
+                    {...register("lastname", {
+                      required: "Last Name is required",
+                      pattern: {
+                        value: /^[a-zA-Z]+$/,
+                        message: "Last Name must be a valid string",
+                      },
+                      minLength: {
+                        value: 3,
+                        message: "Last Name should be greater than 3 characters",
+                      },
+                      maxLength: {
+                        value: 20,
+                        message: "Last Name shouldn't be greater than 20 characters",
+                      },
+                    })}
+                  />
+                  <div className="invalid-feedback error-text">
+                    {errors?.lastname?.message}
+                  </div>
+                </div>
 
-                <input
+                <div className="form-group my-3">
+                 
+                  <input
+                    type="text"
+                    name="email"
+                    className={`form-control form--input ${
+                      errors.email ? "is-invalid" : ""
+                    }`}
+                    placeholder="Email"
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/,
+                        message: "Email must be a valid email address",
+                      },
+                    })}
+                  />
+                  <div className="invalid-feedback error-text">
+                    {errors?.email?.message}
+                  </div>
+                </div>
+
+                <div className="form-group my-3">
+                 
+                  <input
+                    type={passwordType} 
+                    name="password"
+                    className={`form-control form--input ${
+                      errors.password ? "is-invalid" : ""
+                    } `}
+                    placeholder="Password"
+                    {...register("password", {
+                      required: "Password is required",
+                      pattern: {
+                        value: /^[a-zA-Z]+[0-9]+$/,
+                        message: "Password must be alpha numeric",
+                      },
+                      minLength: {
+                        value: 8,
+                        message: "Password must be atleast 8 characters",
+                      },
+                    })}
+                  />
+                   <button className="showhidebtn" onClick={togglePassword}>
+                        {passwordType === "password" ? <i className="fa fa-eye-slash"></i> :<i className="fa fa-eye"></i>}
+                  </button>
+                  <div className="invalid-feedback error-text">
+                    {errors?.password?.message}
+                  </div>
+                </div>
+
+                <div className="form-group my-3">
+                
+                  <input
                   type="password"
-                  onChange={handleCPasswordChange}
+                    name="confirm"
+                    className={`form-control form--input ${
+                      errors.confirm ? "is-invalid" : ""
+                    }`}
+                    placeholder="Confirm Password"
+                    {...register("confirm", {
+                      required: "confirm password is required",
+                      validate: value =>
+                      value === password.current || "The passwords do not match"
+                    })}
+                  />
                  
-                  value={confirmPassword}
-                  className="form-control form--input"
-                  placeholder="Confirm Password"
-                />
-                <span className="error-text">{cpasswordError}</span>
+                  <span className="invalid-feedback error-text">
+                    {errors?.confirm?.message}
+                  </span>
+                </div>
 
-
-
-                <br /><br />
-                <button className='btn btn-success bt-lg login--button' onClick={registration}>Register</button>
-                <Link className='btn btn-success bt-lg login--button ml-1' to="/">Back</Link>
-                <br /><br />
+                <div className="form-group">
+                  <button type="submit" className="btn btn-success"> Save </button>
+                  {/* <button onClick={notify}>Notify!</button>
+                  <ToastContainer /> */}
+                </div>
               </div>
-              <p className="text-success p-2 m-2">{msg}</p>
-            </div>
-          </div>
+            
+          </form>
         </div>
       </div>
+      </div>
     </div>
-  )
-}
+  );
+};
